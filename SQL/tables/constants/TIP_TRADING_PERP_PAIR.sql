@@ -1,0 +1,26 @@
+CREATE TABLE dbo.TIP_TRADING_PERP_PAIR
+(
+	pair_id SERIAL PRIMARY KEY
+    , pair_name VARCHAR(50) NOT NULL UNIQUE
+    , flg_active BOOLEAN DEFAULT TRUE
+	
+    , ins_date TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    , ins_user INT
+    , upt_date TIMESTAMP WITH TIME ZONE
+    , upt_user INT
+)
+
+SELECT * FROM dbo.TIP_TRADING_PERP_PAIR
+
+/*
+INSERT INTO dbo.TIP_TRADING_PERP_PAIR
+(
+	pair_name
+	, ins_user
+)
+VALUES
+(
+	'ETHUSDT'
+	, 1
+)
+*/
