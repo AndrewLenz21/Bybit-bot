@@ -9,7 +9,7 @@ import (
 	"go.uber.org/zap/zapcore"
 
 	"github.com/go-faster/errors"
-	"github.com/gotd/td/examples"
+	examples "github.com/gotd/td/examples"
 	"github.com/gotd/td/telegram"
 	"github.com/gotd/td/telegram/auth"
 	"github.com/gotd/td/telegram/updates"
