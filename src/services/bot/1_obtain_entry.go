@@ -19,7 +19,7 @@ func ParseSignalParams(channel int64, message string) (symbol string, entry stri
 	}
 
 	// Channel 2
-	if len(lines) > 4 && channel == 5572573112 {
+	if len(lines) > 4 && channel == 1129940546 {
 		symbol = ChannelB{}.ObtainSymbol(lines)
 		side = ChannelB{}.ObtainSide(lines)
 		entry = ChannelB{}.ObtainEntry(lines)

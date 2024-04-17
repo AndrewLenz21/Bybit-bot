@@ -20,7 +20,7 @@ func SignalReceived(sender string, idMessage int, channel int64, timestamp int, 
 			order.ObtainCoinInfo()
 			order.ObtainUserConfiguration()
 			order.SetLeverage()
-			if channel == 5572573112 {
+			if channel == 1129940546 {
 				order.CompareEntryPrice()
 			}
 			// We got the configuration and the signal, lets define the order amount and targets (TP and SL)
