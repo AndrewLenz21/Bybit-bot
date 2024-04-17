@@ -2,8 +2,8 @@ package bot_service
 
 import "strings"
 
-type ChannelA struct{} //CHANNEL 1
-type ChannelB struct{} //CHANNEL 2
+type ChannelA struct{}
+type ChannelB struct{}
 
 type SignalParser interface {
 	ObtainSymbol(line string) string
@@ -11,7 +11,7 @@ type SignalParser interface {
 	ObtainEntry(line string) string
 }
 
-/************channel 1 parser***********/
+/************Channel 1 parser***********/
 func (c ChannelA) ObtainSymbol(line string) string {
 	symbol := ""
 	//Symbol is between '#' and '/'
@@ -50,7 +50,7 @@ func (c ChannelA) ObtainEntry(line string) string {
 	return entry
 }
 
-/**********CHANNEL 2 Parser**********/
+/**********Channel 2 Parser**********/
 func (c ChannelB) ObtainSymbol(lines []string) string {
 	symbol := ""
 	lineWithHash := ""

@@ -26,9 +26,50 @@ func BybitOpenOrder(symbol string, side string, entry string, qty string, stop_l
 	if err != nil {
 		fmt.Println("Error doing Order.Do:", err)
 	}
-	print(bybit.PrettyPrint(res) + "\n")
+
+	if res == nil {
+		print("ERROR")
+	}
+	//print(bybit.PrettyPrint(res) + "\n")
 
 	// TODO: When retMsg is not "OK", make telegram bot to send errors
+}
+
+func BybitGetOpenOrders(symbol string, side string, ctx context.Context) *BybitOpenOrders {
+	params := map[string]interface{}{
+		"category":    "linear",
+		"symbol":      symbol,
+		"orderFilter": "Order",
+		"openOnly":    0, //'0' is open only
+		"limit":       3,
+	}
+
+	Order := Client.NewTradeService(params)
+	res, err := Order.GetOpenOrders(ctx)
+	if err != nil {
+		fmt.Println("Error doing Order.GetOpenOrders:", err)
+		return nil
+	}
+
+	var OpenOrders BybitOpenOrders
+	resultJSON, err := json.Marshal(res.Result)
+	if err != nil {
+		fmt.Println("Error parsing json Open Orders:", err)
+		return nil
+	}
+	json.Unmarshal(resultJSON, &OpenOrders)
+
+	//filter just the orders we need to test
+	//print(bybit.PrettyPrint(res) + "\n")
+	filteredOrders := []OrderData{}
+	for _, order := range OpenOrders.Data {
+		if order.ReduceOnly && order.Side != side {
+			filteredOrders = append(filteredOrders, order)
+		}
+	}
+	OpenOrders.Data = filteredOrders
+
+	return &OpenOrders
 }
 
 func BybitGetPositions(symbol string, ctx context.Context) *PositionInfo {
@@ -51,9 +92,35 @@ func BybitGetPositions(symbol string, ctx context.Context) *PositionInfo {
 	}
 	json.Unmarshal(resultJSON, &positionInfo)
 
-	print(bybit.PrettyPrint(res) + "\n")
+	//print(bybit.PrettyPrint(res.Result) + "\n")
 
 	return &positionInfo
+}
+
+func BybitGetLastPnl(symbol string, ctx context.Context) string {
+	params := map[string]interface{}{
+		"category": "linear",
+		"symbol":   symbol,
+		"limit":    1,
+	}
+	Pnl := Client.NewPositionService(params)
+	res, err := Pnl.GetClosePnl(ctx)
+	if err != nil {
+		fmt.Println("Error doing Pnl.GetClosePnl:", err)
+		return ""
+	}
+
+	var lastPnl BybitLastPnl
+	resultJSON, err := json.Marshal(res.Result)
+	if err != nil {
+		fmt.Println("Error parsing json Position:", err)
+		return ""
+	}
+	json.Unmarshal(resultJSON, &lastPnl)
+
+	//print(bybit.PrettyPrint(res) + "\n")
+
+	return lastPnl.Data[0].ClosedPnl
 }
 
 func BybitSetLeverage(symbol string, buyLeverage string, sellLeverage string, ctx context.Context) {

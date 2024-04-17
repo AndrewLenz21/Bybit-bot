@@ -68,17 +68,17 @@ func (s *TradingOrder) SetOrderParameters() (*TradingOrder, error) {
 	PositionAmmount := n - (MaxAmmountPositions * s.CoinRules.MaxAmount) //Normal position
 
 	if MaxAmmountPositions > 0 { //  almost always will be zero
-		PositionAmmount = s.CoinRules.MaxAmount
+		PositionAmmount = s.CoinRules.MaxAmount //If we are over the maxAmount, we are going to open just the max amount
 	}
 
 	AdjustedPosition := math.Floor(PositionAmmount/s.CoinRules.MinAmount) * s.CoinRules.MinAmount //Our exact position
 
 	s.FullPositions = int(MaxAmmountPositions)
 	s.PositionAmount = sql.NullFloat64{Float64: AdjustedPosition, Valid: true}
-	fmt.Printf("Our position value: %.7f\n", s.PositionAmount.Float64)
+	//fmt.Printf("Our position value: %.7f\n", s.PositionAmount.Float64)
 
-	fmt.Println("USDT Available:", USDT_acc)
-	fmt.Printf("Entry price: %.7f \nMax Loss: %.9f\n", Entry, MaxLoss)
+	//fmt.Println("USDT Available:", USDT_acc)
+	//fmt.Printf("Entry price: %.7f \nMax Loss: %.9f\n", Entry, MaxLoss)
 	// The AdjustedPosition could be zero '0'
 	if AdjustedPosition > 0 {
 		// OPEN POSITIONS

@@ -45,9 +45,9 @@ func (s *TradingOrder) ObtainCoinInfo() (*TradingOrder, error) {
 	Float64MinOrder := StringToFloat64(MinOrder)
 	Float64MaxOrder := StringToFloat64(MaxOrder)
 
-	fmt.Printf("Decimals for coin: %.4f\n", FloatTicker)
-	fmt.Printf("Minimun Order qty: %.4f\n", Float64MinOrder)
-	fmt.Printf("Maximun Order qty: %.4f\n", Float64MaxOrder)
+	// fmt.Printf("Decimals for coin: %.4f\n", FloatTicker)
+	// fmt.Printf("Minimun Order qty: %.4f\n", Float64MinOrder)
+	// fmt.Printf("Maximun Order qty: %.4f\n", Float64MaxOrder)
 
 	s.CoinRules.Ticker = FloatTicker
 	s.CoinRules.MinAmount = Float64MinOrder

@@ -22,33 +22,7 @@ func (s *TradingOrder) SetLeverage() *TradingOrder {
 			BybitSetLeverage(s.Symbol, buyLeverage, sellLeverage, s.ctx)
 		}
 	}
-
-	// params := map[string]interface{}{
-	// 	"category":     "linear",
-	// 	"symbol":       s.Symbol,
-	// 	"buyLeverage":  buyLeverage,
-	// 	"sellLeverage": sellLeverage,
-	// }
-
-	// BybitService := Client.NewPositionService(params)
-
-	// coinInfo, err := BybitService.GetPositionList(s.ctx) //obtain actual leverage
-	// if err != nil {
-	// 	fmt.Printf("Error getting coin leverage: %v\n", err)
-	// 	return nil, err
-	// }
-
-	// var positionInfo PositionInfo
-	// resultJSON, err := json.Marshal(coinInfo.Result)
-	// if err == nil {
-	// 	json.Unmarshal(resultJSON, &positionInfo)
-	// 	coinInfo := positionInfo.List[0]
-
-	// 	if coinInfo.Leverage != buyLeverage && coinInfo.Leverage != sellLeverage {
-	// 		BybitService.SetPositionLeverage(s.ctx) // If the code entried here, there is no error
-	// 	}
-	// }
-
+	s.EntryFloat64 = StringToFloat64(s.Entry)
 	return s
 }
 
@@ -56,7 +30,7 @@ func (s *TradingOrder) CompareEntryPrice() (*TradingOrder, error) {
 	fmt.Println("/**/")
 	fmt.Println("/************STEP 4*************/")
 	/*
-		ON Binance Futures Premium there are signals with no float entry point
+		ON Channel 2 there are signals with no float entry point
 		So our objective is to get the right entry price
 	*/
 	service := Client.NewTickersService().Category("linear").Symbol(s.Symbol)
@@ -88,7 +62,7 @@ func (s *TradingOrder) CompareEntryPrice() (*TradingOrder, error) {
 	perc_diff := math.Abs((LastPriceFloat64 - EntryFloat64) / EntryFloat64 * 100)
 
 	if EntryFloat64 > 1 && LastPriceFloat64 < 1 && perc_diff > 15 {
-		fmt.Println("We got decimals problems...resolving")
+		//fmt.Println("We got decimals problems...resolving")
 
 		EntryFloat64 = EntryFloat64 / math.Pow(10, s.CoinRules.Ticker)
 		//We will have particular cases

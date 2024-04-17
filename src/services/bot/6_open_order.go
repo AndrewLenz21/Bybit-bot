@@ -7,7 +7,7 @@ import (
 // WE ARE GOING TO OPEN NEW ORDER USING BYBIT CLIENT
 func (s *TradingOrder) OpenNewOrder() (*TradingOrder, error) {
 	fmt.Println("/**/")
-	fmt.Println("/********STEP 6: open order*********/")
+	fmt.Println("/********STEP 6: open order *********/")
 	//Define Stop Loss String
 	var SL_float64 float64
 	if s.Side == "Buy" {
@@ -19,17 +19,19 @@ func (s *TradingOrder) OpenNewOrder() (*TradingOrder, error) {
 	Stop_Loss := Float64ToString(SL_float64)
 	Qty := Float64ToString(s.PositionAmount.Float64)
 
-	if s.flg_approval {
-		fmt.Println("WE HAVE OUR POSITION READY:")
-		fmt.Println("Symbol:", s.Symbol)
-		fmt.Println("Side:", s.Side)
-		fmt.Println("Entry price:", s.Entry)
-		fmt.Println("Stop Loss:", Stop_Loss)
-		fmt.Println("Quantity:", Qty)
-		fmt.Printf("LongLeverage: %f\nShortLeverage: %f\n", s.LongLeverage, s.ShortLeverage)
+	//Always sue a stop loss
+	if s.flg_approval && StringToFloat64(Stop_Loss) > 0 {
+		// fmt.Println("WE HAVE OUR POSITION READY:")
+		// fmt.Println("Symbol:", s.Symbol)
+		// fmt.Println("Side:", s.Side)
+		// fmt.Println("Entry price:", s.Entry)
+		// fmt.Println("Stop Loss:", Stop_Loss)
+		// fmt.Println("Quantity:", Qty)
+		// fmt.Printf("LongLeverage: %f\nShortLeverage: %f\n", s.LongLeverage, s.ShortLeverage)
 
 		//WE CAN CALL THE BYBIT API - reduce_only is false
 		BybitOpenOrder(s.Symbol, s.Side, s.Entry, Qty, Stop_Loss, false, s.ctx)
+		//After call the bybit API we will recieve msg from websocket
 	} else {
 		fmt.Println("POSSITION NOT APPROVED")
 	}

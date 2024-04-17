@@ -55,7 +55,7 @@ func (s *QueryService) InsertCall(function string, args ...any) (string, error) 
 	argsString := constructArgs(args...)
 
 	//prepare the QUERY
-	query := fmt.Sprintf("SELECT dbo.%s(%s)", function, argsString)
+	query := fmt.Sprintf("SELECT dbo_trading_bot.%s(%s)", function, argsString)
 	var resultMsg string
 	err = tx.QueryRow(s.ctx, query, args...).Scan(&resultMsg)
 	if err != nil {
@@ -92,7 +92,7 @@ func (s *QueryService) UpdateCall(function string, args ...any) (string, error) 
 	argsString := constructArgs(args...)
 
 	//prepare the QUERY
-	query := fmt.Sprintf("SELECT dbo.%s(%s)", function, argsString)
+	query := fmt.Sprintf("SELECT dbo_trading_bot.%s(%s)", function, argsString)
 	var resultMsg string
 	err = tx.QueryRow(s.ctx, query, args...).Scan(&resultMsg)
 	if err != nil {
@@ -106,7 +106,7 @@ func (s *QueryService) UpdateCall(function string, args ...any) (string, error) 
 func (s *QueryService) SelectCall(function string, args ...any) (pgx.Rows, error) {
 	//for select function we don't need transactions
 	argsString := constructArgs(args...)
-	query := fmt.Sprintf("SELECT * FROM dbo.%s(%s)", function, argsString)
+	query := fmt.Sprintf("SELECT * FROM dbo_trading_bot.%s(%s)", function, argsString)
 	//call query
 	rows, err := s.pool.Query(s.ctx, query, args...)
 	if err != nil {

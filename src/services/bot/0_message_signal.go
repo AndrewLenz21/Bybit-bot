@@ -1,12 +1,12 @@
 package bot_service
 
 var allowedChannelIDs = map[int64]bool{
-	1763199802: true, // tester 1
-	1813229153: true, // tester 2
-	5572573112: true, // tester 3
+	1763199802: true, // testing messages channel
+	1813229153: true, // channer sender
+	5572573112: true, // BTC scalp bot (my bot))
 	// SIGNALS
-	1129940546: true, // Channel 1
-	1717037581: true, // Channel 2
+	1129940546: true, // CHANNEL 1
+	1717037581: true, // CHANNEL 2
 }
 
 // PARSING MESSAGE

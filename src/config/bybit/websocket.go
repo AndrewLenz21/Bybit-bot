@@ -3,7 +3,9 @@ package crypto
 import (
 	"bybitbot/src/controllers/handlers"
 	bot_service "bybitbot/src/services/bot"
+	"fmt"
 	"log"
+	"time"
 
 	bybit_connector "github.com/wuhewuhe/bybit.go.api"
 )
@@ -16,10 +18,21 @@ func CreateBybitConfig() {
 	//Send the client to bot
 	bot_service.ObtainBybitClient(Client)
 	StartWebsocketStream() // Create Websocket Stream
+
+	//Every 9 minutes, restart the channel websocket
+	ticker := time.NewTicker(9 * time.Minute)
+	go func() {
+		for {
+			<-ticker.C
+			CloseWebsocketStream()
+			fmt.Println("Restarting websocket")
+			StartWebsocketStream() // Restart WebSocket Stream
+		}
+	}()
 }
 
 func StartWebsocketStream() {
-	ws = bybit_connector.NewBybitPrivateWebSocket(keys.wsURL, keys.apiKey, keys.secretKey, myMessageHandler)
+	ws = bybit_connector.NewBybitPrivateWebSocket(keys.wsURL, keys.apiKey, keys.secretKey, myMessageHandler, bybit_connector.WithMaxAliveTime("600s"))
 	if err := ws.Connect([]string{"order"}); err != nil {
 		log.Fatal("Error connecting to WebSocket:", err)
 	}

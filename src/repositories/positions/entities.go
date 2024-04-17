@@ -27,7 +27,7 @@ So on the final function we are going to return the mapper.
 type UserOpenPositions struct {
 	IdPosition     int    `db:"id_position"`
 	Side           string `db:"side"`
-	PairId         int    `db:"pair_id"`
+	PairId         int    `db:"pair_id_out"`
 	AmountContract string `db:"amount_contract"` // VARCHAR (100)
 }
 

@@ -41,9 +41,9 @@ func (r *OrdersRepo) InsertNewOrder(
 		reduceOnly, // reduce_only BOOL
 	)
 	if err != nil {
-		fmt.Printf("Error isnerting new order: %v\n", err)
+		fmt.Printf("Error inserting new order: %v\n", err)
 		return "", err
 	}
-	fmt.Println("Operation result:", msg)
+	fmt.Println("PostgreSQL InsertNewOrder:", msg)
 	return msg, nil
 }

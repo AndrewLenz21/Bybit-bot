@@ -66,3 +66,54 @@ type TickersInfo struct {
 		MarketPrice string `json:"markPrice"`
 	} `json:"list"`
 }
+
+//our open orders
+// Response
+type BybitOpenOrders struct {
+	Data []OrderData `json:"list"`
+}
+
+// Order Data
+type OpenOrder struct {
+	Symbol    string `json:"symbol"`
+	OrderID   string `json:"orderId"`
+	Side      string `json:"side"`
+	OrderType string `json:"orderType"`
+	Price     string `json:"price"`
+
+	Qty        string `json:"qty"`
+	CumExecQty string `json:"cumExecQty"`
+
+	OrderStatus string `json:"orderStatus"`
+	TakeProfit  string `json:"takeProfit"`
+	StopLoss    string `json:"stopLoss"`
+	CreateType  string `json:"createType"`
+
+	ReduceOnly bool `json:"reduceOnly"`
+}
+
+//our last Pnl
+// Response
+type BybitLastPnl struct {
+	Data []SymbolLastPnl `json:"list"`
+}
+
+// Order Data
+type SymbolLastPnl struct {
+	Symbol     string `json:"symbol"`
+	OrderID    string `json:"orderId"`
+	Side       string `json:"side"`
+	OrderType  string `json:"orderType"`
+	OrderPrice string `json:"orderPrice"`
+
+	Qty       string `json:"qty"`
+	ExecType  string `json:"execType"`
+	ClosedPnl string `json:"closedPnl"`
+}
+
+//For targets
+type Target struct {
+	Id    int
+	Price float64
+	Qty   float64
+}

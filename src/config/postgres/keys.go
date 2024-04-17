@@ -51,6 +51,7 @@ func (d *DbUrlStructService) CreateUrl(ctx context.Context) (client *DbUrlStruct
 	//else return the URL
 	d.name = d.c.db_name
 	d.url = fmt.Sprintf("postgresql://%s:%s@%s/%s", d.c.db_user, d.c.db_pwd, d.c.db_port, d.c.db_name)
+	//print(d.url)
 	return d, nil
 }
 

@@ -5,6 +5,7 @@ import (
 	"fmt"
 )
 
+/*INSERT OR UPDATE NEW POSITION*/
 func (r *PositionsRepo) InsertNewPosition(
 	symbol string,
 	entryPrice string,
@@ -48,14 +49,31 @@ func (r *PositionsRepo) InsertNewPosition(
 		flgActive, // reduce_only BOOL
 	)
 	if err != nil {
-		fmt.Printf("Error inserting new position: %v\n", err)
+		fmt.Printf("Error inserting new position: %v on %s\n", err, symbol)
 		return "", err
 	}
-	fmt.Println("Operation result:", msg)
+	fmt.Println("PostgreSQL InsertNewPosition:", msg)
 	return msg, nil
 }
 
-/*ONTAIN POSITIONS*/
+/*CLOSE POSITION*/
+func (r *PositionsRepo) ClosePosition(symbol string, side string, last_pnl string) (string, error) {
+	sql := postgres.NewQueryService(r.pool)
+	msg, err := sql.UpdateCall(
+		"close_position", // Postgres function
+		symbol,           // pair_string VARCHAR(50)
+		side,             // side VARCHAR(5)
+		last_pnl,         // size VARCHAR(6)
+	)
+	if err != nil {
+		fmt.Printf("Error closing position: %v on %s\n", err, symbol)
+		return "", err
+	}
+	fmt.Println("PostgreSQL ClosePosition:", msg)
+	return msg, nil
+}
+
+/*OBTAIN POSITIONS*/
 func (r *PositionsRepo) GetUserPositions(symbol string, side string) ([]UserOpenPositions, error) {
 	sql := postgres.NewQueryService(r.pool)
 	rows, err := sql.SelectCall("get_user_open_positions", symbol, side)
