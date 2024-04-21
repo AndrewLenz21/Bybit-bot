@@ -96,15 +96,35 @@ func SetAuthenticationConfig() {
 }
 
 func SetMessageHandlers() {
+	var ID int64
+	name := ""
 	// Setup message update handlers.
 	handler.OnNewChannelMessage(func(ctx context.Context, e tg.Entities, update *tg.UpdateNewChannelMessage) error {
+		msg := update.Message.(*tg.Message)
+		peerChannel := msg.PeerID.(*tg.PeerChannel)
+		ID = peerChannel.ChannelID // Obtain the Channel ID
+
+		if user, ok := e.Channels[ID]; ok { // Obtain the Channel Name
+			name = user.Title
+		}
 		//logger.Info("Channel message", zap.Any("message", update.Message))
-		handlers.TelegramMessageHandler("Channel", update.Message)
+
+		// Sender name  => 'name'
+		handlers.TelegramMessageHandler(ID, msg, name)
 		return nil
 	})
 	handler.OnNewMessage(func(ctx context.Context, e tg.Entities, update *tg.UpdateNewMessage) error {
+		msg := update.Message.(*tg.Message)
+		peerUser := msg.PeerID.(*tg.PeerUser)
+		ID = peerUser.UserID // Obtain the User ID
+
+		if user, ok := e.Users[ID]; ok { // Obtain the User Name
+			name = user.FirstName + " " + user.LastName
+		}
 		//logger.Info("Message", zap.Any("message", update.Message))
-		handlers.TelegramMessageHandler("User", update.Message)
+
+		// Sender name  => 'name'
+		handlers.TelegramMessageHandler(ID, msg, name)
 		return nil
 	})
 }

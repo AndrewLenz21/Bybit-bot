@@ -15,10 +15,13 @@ var ws *bybit_connector.WebSocket
 func CreateBybitConfig() {
 	keys = LoadCryptoEnvironment()
 	Client = NewCryptoClient()
-	//Send the client to bot
-	bot_service.ObtainBybitClient(Client)
-	StartWebsocketStream() // Create Websocket Stream
 
+	bot_service.ObtainBybitClient(Client) //Send the client to bot
+	StartWebsocketStream()                // Create Websocket Stream
+	RestartWebsocketStream()              // Restart Websocket Stream
+}
+
+func RestartWebsocketStream() {
 	//Every 9 minutes, restart the channel websocket
 	ticker := time.NewTicker(9 * time.Minute)
 	go func() {

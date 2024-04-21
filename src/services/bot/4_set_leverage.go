@@ -7,6 +7,8 @@ import (
 )
 
 func (s *TradingOrder) SetLeverage() *TradingOrder {
+	fmt.Println("/**/")
+	fmt.Println("/************STEP 4*************/")
 	Positions := BybitGetPositions(s.Symbol, s.ctx)
 	if Positions == nil {
 		fmt.Println("Failed to get positions")
@@ -27,8 +29,6 @@ func (s *TradingOrder) SetLeverage() *TradingOrder {
 }
 
 func (s *TradingOrder) CompareEntryPrice() (*TradingOrder, error) {
-	fmt.Println("/**/")
-	fmt.Println("/************STEP 4*************/")
 	/*
 		ON Channel 2 there are signals with no float entry point
 		So our objective is to get the right entry price

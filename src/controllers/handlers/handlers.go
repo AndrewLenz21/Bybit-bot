@@ -13,18 +13,7 @@ func BybitOrderHandler(message string, Client *bybit_connector.Client) {
 	bot_service.RegisterOrder(message)
 }
 
-func TelegramMessageHandler(sender string, tgmessage tg.MessageClass) {
-	msg := tgmessage.(*tg.Message)
-
-	var channelID int64
-	if sender == "User" { //message from user
-		peerChannel := msg.PeerID.(*tg.PeerUser)
-		channelID = peerChannel.UserID
-	}
-	if sender == "Channel" { //message from channel
-		peerChannel := msg.PeerID.(*tg.PeerChannel)
-		channelID = peerChannel.ChannelID
-	}
-
-	bot_service.SignalReceived(sender, msg.ID, channelID, msg.Date, msg.Message)
+func TelegramMessageHandler(userId int64, tgmessage *tg.Message, username string) {
+	// ID is channel ID
+	bot_service.SignalReceived(userId, username, tgmessage.ID, tgmessage.Message, tgmessage.Date)
 }

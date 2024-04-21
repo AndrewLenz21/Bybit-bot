@@ -12,6 +12,9 @@ type CoinRules struct {
 }
 
 func NewTradingPosition(symbol string, side string, entry string) *TradingOrder {
+	fmt.Println("/**/")
+	fmt.Println("/************STEP 2*************/")
+
 	return &TradingOrder{
 		ctx:          context.Background(),
 		flg_approval: true,
@@ -23,8 +26,6 @@ func NewTradingPosition(symbol string, side string, entry string) *TradingOrder 
 }
 
 func (s *TradingOrder) ObtainCoinInfo() (*TradingOrder, error) {
-	fmt.Println("/**/")
-	fmt.Println("/************STEP 2*************/")
 	//from Bybit, obtain the minimun and maximum order
 	service := Client.NewInstrumentsInfoService().Category("linear").Symbol(s.Symbol)
 	result, err := service.Do(s.ctx)
