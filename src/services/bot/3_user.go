@@ -10,7 +10,7 @@ func (s *TradingOrder) ObtainUserConfiguration() (*TradingOrder, error) {
 	fmt.Println("/**/")
 	fmt.Println("/************STEP 3*************/")
 	db := user.NewUserRepo(postgres.GetPool())
-	UserConf, err := db.GetUserConfiguration(1) // we are user 1
+	UserConf, err := db.GetUserConfiguration(1) // we are using configuration bot 1
 	if err != nil {
 		fmt.Println("Error obtaining user configuration:", err)
 		return nil, err

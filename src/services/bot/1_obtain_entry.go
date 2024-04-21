@@ -19,7 +19,7 @@ func ParseSignalParams(channel int64, username string, message string) (symbol s
 	}
 
 	// Channel 2
-	if len(lines) > 4 && channel == 1129940546 {
+	if len(lines) > 4 && channel == 1717037581 {
 		fmt.Println("/**/")
 		fmt.Println("/************STEP 1*************/")
 		symbol = ChannelB{}.ObtainSymbol(lines)

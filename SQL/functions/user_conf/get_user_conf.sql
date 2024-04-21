@@ -1,22 +1,12 @@
-CREATE OR REPLACE FUNCTION dbo.get_user_trading_conf(_user_id INT)
-RETURNS TABLE (
-    id_configuration INT,
-    user_id INT,
-    pair_id INT,
-    amount_per_position NUMERIC(6,4),
-    max_loss_per_position NUMERIC(6,4),
-    take_profit NUMERIC(6,4),
-    stop_loss NUMERIC(6,4),
-    trailing_stop NUMERIC(6,4),
-    default_first_target NUMERIC(6,4),
-    amount_per_first_target NUMERIC(6,4),
-    default_next_target NUMERIC(6,4),
-    amount_per_next_target NUMERIC(6,4),
-    long_leverage NUMERIC(4,2),
-    short_leverage NUMERIC(4,2)
-)
-LANGUAGE plpgsql
-AS $$
+CREATE OR REPLACE FUNCTION dbo_trading_bot.get_user_trading_conf(
+	_id_configuration integer)
+    RETURNS TABLE(id_configuration integer, user_id integer, pair_id integer, amount_per_position numeric, max_loss_per_position numeric, take_profit numeric, stop_loss numeric, trailing_stop numeric, default_first_target numeric, amount_per_first_target numeric, default_next_target numeric, amount_per_next_target numeric, long_leverage numeric, short_leverage numeric) 
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+    ROWS 1000
+
+AS $BODY$
 BEGIN
     RETURN QUERY
     SELECT 
@@ -34,10 +24,7 @@ BEGIN
         uc.amount_per_next_target,
         uc.long_leverage,
         uc.short_leverage
-    FROM dbo.user_trading_conf uc
-    WHERE uc.user_id = _user_id;
+    FROM dbo_trading_bot.user_trading_conf uc
+    WHERE uc.id_configuration = _id_configuration;
 END;
-$$;
-
-SELECT * FROM dbo.get_user_trading_conf(1); -- Reemplaza 1 con el ID de configuración específico que quieras consultar.
-
+$BODY$;

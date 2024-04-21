@@ -26,6 +26,7 @@ func (r *OrdersRepo) InsertNewOrder(
 	sql := postgres.NewQueryService(r.pool)
 	msg, err := sql.InsertCall(
 		"insert_new_order_id", // Postgres function
+		1,                     //user_id_in we are user 1
 		pairString,            // pair_string VARCHAR(50)
 		orderId,               // order_id VARCHAR(100)
 		side,                  // side VARCHAR(5)
@@ -37,8 +38,8 @@ func (r *OrdersRepo) InsertNewOrder(
 		takeProfit,            // take_profit VARCHAR(100)
 		stopLoss,              // stop_loss VARCHAR(100)
 		category,              // category VARCHAR(100)
-		createType,
-		reduceOnly, // reduce_only BOOL
+		createType,            // create by StopLoss, ByUser, By Closing
+		reduceOnly,            // reduce_only BOOL
 	)
 	if err != nil {
 		fmt.Printf("Error inserting new order: %v\n", err)

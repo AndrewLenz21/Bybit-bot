@@ -16,7 +16,9 @@ func ObtainBybitClient(Bybit_client *bybit.Client) {
 	Client = Bybit_client
 }
 
-func BybitOpenOrder(symbol string, side string, entry string, qty string, stop_loss string, reduce_only bool, ctx context.Context) {
+func BybitOpenOrder(symbol string, side string, entry string, qty string, stop_loss string, reduce_only bool, ctx context.Context) string {
+	var orderId string = ""
+
 	Order := Client.NewPlaceOrderService("linear", symbol, side, "limit", qty)
 	Order.Price(entry)
 	Order.StopLoss(stop_loss)
@@ -26,13 +28,20 @@ func BybitOpenOrder(symbol string, side string, entry string, qty string, stop_l
 	if err != nil {
 		fmt.Println("Error doing Order.Do:", err)
 	}
-
-	if res == nil {
-		print("ERROR")
-	}
-	//print(bybit.PrettyPrint(res) + "\n")
-
 	// TODO: When retMsg is not "OK", make telegram bot to send errors
+
+	//print(bybit.PrettyPrint(res) + "\n")
+	if res.RetMsg == "OK" {
+		var Response OrderResult
+		resultJSON, err := json.Marshal(res.Result)
+		if err != nil {
+			fmt.Println("Error parsing json Open Orders:", err)
+			return ""
+		}
+		json.Unmarshal(resultJSON, &Response)
+		orderId = Response.OrderId
+	}
+	return orderId
 }
 
 func BybitGetOpenOrders(symbol string, side string, ctx context.Context) *BybitOpenOrders {

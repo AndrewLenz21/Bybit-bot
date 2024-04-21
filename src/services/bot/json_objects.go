@@ -68,6 +68,17 @@ type TickersInfo struct {
 }
 
 //our open orders
+//Getting order ID
+type ServerResponse struct {
+	Result OrderResult `json:"result"`
+}
+
+// OrderResult define la estructura esperada en el campo `Result`.
+type OrderResult struct {
+	OrderId     string `json:"orderId"`
+	OrderLinkId string `json:"orderLinkId"`
+}
+
 // Response
 type BybitOpenOrders struct {
 	Data []OrderData `json:"list"`

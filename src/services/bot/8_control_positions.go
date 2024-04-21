@@ -212,7 +212,7 @@ func OpenNewTargets(symbol string, size string, side string, entryPrice string, 
 func GetNewTargets(symbol string, size_string string, side string, entryPrice_string string, ctx context.Context) []Target {
 	//OBTAIN USER CONFIGURATION
 	db := user.NewUserRepo(postgres.GetPool())
-	UserConf, err := db.GetUserConfiguration(1) // we are user 1
+	UserConf, err := db.GetUserConfiguration(1) // we are using configuration bot 1
 	if err != nil {
 		fmt.Println("Error obtaining user configuration:", err)
 		return nil

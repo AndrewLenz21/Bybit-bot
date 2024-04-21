@@ -13,6 +13,7 @@ import (
 )
 
 // START server
+// ONLY FOR EDUCATIONAL PURPOSE, TRADING IS DANGEROUS
 func main() {
 	postgres.CreateConnectionPool()
 	go ctrlC() //closing signal with Ctrl + C

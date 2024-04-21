@@ -47,16 +47,20 @@ func SignalReceived(channel int64, username string, idMessage int, message strin
 			order.ObtainCoinInfo()          //Obtain the coin rules from Bybit: MinQty, MaxQty, Ticker for decimals
 			order.ObtainUserConfiguration() //Obtain the configuration from database: StopLoss, Targets, Max Loss
 			order.SetLeverage()             //Do not use a leverage different from user configuration
-			if channel == 1129940546 {      //To resolve decimals problems from Channel 2
-				order.CompareEntryPrice()
-			}
-			// We got the configuration and the signal, lets define the order amount and targets (TP and SL)
-			order.SetOrderParameters()
-			order.OpenNewOrder() //THIS ORDER WILL CALL THE BYBIT HANDLER
-		}
 
-		// db := test.NewTestRepo(postgres.GetPool())
-		// db.ProvaInsert(int(channel), message)
+			//After SetLeverage we controlled if we already have positions
+			if order.flg_approval {
+				if channel == 1717037581 { //To resolve decimals problems from Channel 2
+					order.CompareEntryPrice()
+				}
+				// We got the configuration and the signal, lets define the order amount and targets (TP and SL)
+				order.SetOrderParameters()
+				order.OpenNewOrder() //THIS ORDER WILL CALL THE BYBIT HANDLER
+			} else {
+				fmt.Printf("Order on -> %s \n Side -> %s \n NOT APPROVED", symbol, side)
+				//fmt.Println("POSSITION NOT APPROVED")
+			}
+		}
 	}
 }
 

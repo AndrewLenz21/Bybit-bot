@@ -29,6 +29,7 @@ func (r *PositionsRepo) InsertNewPosition(
 	sql := postgres.NewQueryService(r.pool)
 	msg, err := sql.InsertCall(
 		"upsert_position", // Postgres function
+		1,                 //This robot is user 1
 		symbol,            // pair_string VARCHAR(50)
 		entryPrice,        // entry_price VARCHAR(100)
 		side,              // side VARCHAR(5)
@@ -52,7 +53,7 @@ func (r *PositionsRepo) InsertNewPosition(
 		fmt.Printf("Error inserting new position: %v on %s\n", err, symbol)
 		return "", err
 	}
-	fmt.Println("PostgreSQL InsertNewPosition:", msg)
+	fmt.Println("PostgreSQL UpsertPosition:", msg)
 	return msg, nil
 }
 
@@ -61,6 +62,7 @@ func (r *PositionsRepo) ClosePosition(symbol string, side string, last_pnl strin
 	sql := postgres.NewQueryService(r.pool)
 	msg, err := sql.UpdateCall(
 		"close_position", // Postgres function
+		1,                // this robot is user 1
 		symbol,           // pair_string VARCHAR(50)
 		side,             // side VARCHAR(5)
 		last_pnl,         // size VARCHAR(6)
@@ -76,7 +78,7 @@ func (r *PositionsRepo) ClosePosition(symbol string, side string, last_pnl strin
 /*OBTAIN POSITIONS*/
 func (r *PositionsRepo) GetUserPositions(symbol string, side string) ([]UserOpenPositions, error) {
 	sql := postgres.NewQueryService(r.pool)
-	rows, err := sql.SelectCall("get_user_open_positions", symbol, side)
+	rows, err := sql.SelectCall("get_user_open_positions", 1, symbol, side)
 	if err != nil {
 		return nil, err
 	}

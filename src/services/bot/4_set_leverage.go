@@ -9,6 +9,8 @@ import (
 func (s *TradingOrder) SetLeverage() *TradingOrder {
 	fmt.Println("/**/")
 	fmt.Println("/************STEP 4*************/")
+
+	positions_on_side := 0
 	Positions := BybitGetPositions(s.Symbol, s.ctx)
 	if Positions == nil {
 		fmt.Println("Failed to get positions")
@@ -23,6 +25,15 @@ func (s *TradingOrder) SetLeverage() *TradingOrder {
 			sellLeverage := strconv.FormatFloat(s.ShortLeverage, 'f', -1, 64)
 			BybitSetLeverage(s.Symbol, buyLeverage, sellLeverage, s.ctx)
 		}
+		//Count positions
+		if pos.Side == s.Side {
+			positions_on_side++
+		}
+	}
+
+	if positions_on_side > 0 {
+		//We should not open other position on the same side and coin
+		s.flg_approval = false
 	}
 	s.EntryFloat64 = StringToFloat64(s.Entry)
 	return s
@@ -51,7 +62,7 @@ func (s *TradingOrder) CompareEntryPrice() (*TradingOrder, error) {
 
 	// particular cases
 	// ticker is less than len(entry)
-	if int(s.CoinRules.Ticker) < len(s.Entry) {
+	if int(s.CoinRules.Ticker) < len(s.Entry) && StringToFloat64(coinInfo.LastPrice) < 0 {
 		s.Entry = s.Entry[:int(s.CoinRules.Ticker)]
 	}
 

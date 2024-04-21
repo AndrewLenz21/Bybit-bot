@@ -30,10 +30,12 @@ func (s *TradingOrder) OpenNewOrder() (*TradingOrder, error) {
 		// fmt.Printf("LongLeverage: %f\nShortLeverage: %f\n", s.LongLeverage, s.ShortLeverage)
 
 		//WE CAN CALL THE BYBIT API - reduce_only is false
-		BybitOpenOrder(s.Symbol, s.Side, s.Entry, Qty, Stop_Loss, false, s.ctx)
+		order_id := BybitOpenOrder(s.Symbol, s.Side, s.Entry, Qty, Stop_Loss, false, s.ctx) //we will recieve the order ID
+		fmt.Printf("ORDER -> %s \n", order_id)
 		//After call the bybit API we will recieve msg from websocket
 	} else {
-		fmt.Println("POSSITION NOT APPROVED")
+		fmt.Printf("Order on -> %s \n Side -> %s \n NOT APPROVED", s.Symbol, s.Side)
+		//fmt.Println("POSSITION NOT APPROVED")
 	}
 
 	return s, nil
