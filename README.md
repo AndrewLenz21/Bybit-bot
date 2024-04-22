@@ -7,6 +7,7 @@ go run main.go
 ---
 ## Only for Educational Purposes
 Please Trading is dangerous and more if you are letting a bot doing it for you. 
+
 ---
 Model for channel 1:
 ``` Channel 1
